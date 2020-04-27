@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Random;
 
 public class Car extends Main implements Runnable {
@@ -8,37 +9,37 @@ public class Car extends Main implements Runnable {
 
     @Override
     public void run() {
-        int runDistance = 0;
-        long startTime = System.currentTimeMillis();
-        while (runDistance < Main.DISTANCE){
+        long start = System.currentTimeMillis();
+        int location = 0;
+        while (location < DISTANCE) {
             try {
-                int speed = (new Random()).nextInt();
-                runDistance += speed;
-                String log = "|";
-                int percentTravel = (runDistance*100)/ DISTANCE;
-                for (int i = 0; i < DISTANCE ; i+= STEP) {
-                    if(percentTravel >= i + STEP)
-                        log += "=";
-                    else if(percentTravel >= i && percentTravel< i + STEP)
-                        log += "0";
-                    else
-                        log += "-";
+                String timeLine = "|";
+                int speed = (int) (Math.random() * 10);
+                location += speed;
+                int percentOfDistance = location * 100 / DISTANCE;
+                for (int i = 0; i < DISTANCE; i += STEP) {
+                    if (percentOfDistance >= i + STEP)
+                        timeLine += "=";
+                    else if (percentOfDistance >= i && percentOfDistance < i + STEP)
+                        timeLine += "0";
+                    else if(percentOfDistance <= i + STEP)
+                        timeLine += "-";
                 }
-                log += "|";
-                System.out.println( this.name + ": " + log + " " + Math.min(DISTANCE, runDistance) + "KM");
+                timeLine += "|";
+                System.out.println(name + ": " + timeLine + " " + percentOfDistance + " km");
                 Thread.sleep(1000);
-            } catch (Exception e){
-                System.out.println("Car "+this.name+"is broken down !");
-                break;
+        } catch(InterruptedException e){
+            e.printStackTrace();
             }
-
         }
-        long endTime = System.currentTimeMillis();
-        System.out.println("Car" + this.name + " Finish in " + (endTime - startTime) / 1000 + "s");
+        long end = System.currentTimeMillis();
+        System.out.println(name + " is finished at " +(end-start)/1000+ " seconds"  );
+
     }
+
 }
 class Main{
-    public static int DISTANCE = 300;
+    public static int DISTANCE = 100;
 
-    public static int STEP = 2;
+    public static int STEP = 1;
 }
